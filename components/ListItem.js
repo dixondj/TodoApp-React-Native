@@ -1,24 +1,15 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-
+import React from 'react';
 import {
-  View,
-  Text,
   TextInput,
-  SafeAreaView,
-  ScrollView,
-  FlatList,
-  Button,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Alert,
-  StyleSheet,
 } from 'react-native';
 import Axios from 'axios';
 import {useDispatch} from 'react-redux';
 import {deleteTodo, editTodo} from '../ducks/todos';
-import UnselectedIcon from '../assets/icons/tnc-unselected.svg';
 import {Icon} from 'react-native-elements';
+import styles from './styles';
 
 export default function ListItem({item}) {
   const dispatch = useDispatch();
@@ -69,24 +60,7 @@ export default function ListItem({item}) {
           {cancelable: false},
         )
       }
-      style={{
-        shadowColor: 'rgb(0, 0, 0)',
-        shadowOffset: {
-          width: 1,
-          height: 1,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
-        marginTop: 17,
-        // marginHorizontal: 10,
-        borderRadius: 100,
-        marginHorizontal: 10,
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-      }}>
+      style={styles.touchableList}>
       <TouchableWithoutFeedback onPress={handleMarkAsDone}>
         {item.done ? (
           <Icon
@@ -98,29 +72,12 @@ export default function ListItem({item}) {
         ) : (
           <Icon name="circle" type="font-awesome-5" size={20} color="#ffcfd9" />
         )}
-        {/* <Icon name="circle" type="font-awesome-5" size={20} /> */}
       </TouchableWithoutFeedback>
       <TextInput
         onEndEditing={handleEdit}
-        style={item.done ? styles.textStyles2 : styles.textStyles1}>
+        style={item.done ? styles.checkCircleIcon : styles.circleIcon}>
         {item.content}
       </TextInput>
-      {/* <Button title="X" onPress={handleDelete} /> */}
     </TouchableOpacity>
   );
 }
-const styles = StyleSheet.create({
-  textStyles1: {
-    fontFamily: 'Raleway-ExtraLight',
-    fontSize: 16,
-    marginLeft: 20,
-    color: 'black',
-  },
-  textStyles2: {
-    fontFamily: 'Raleway-ExtraLight',
-    fontSize: 16,
-    marginLeft: 20,
-    color: '#a3a3a3',
-    textDecorationLine: 'line-through',
-  },
-});

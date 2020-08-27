@@ -4,15 +4,10 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
-  ScrollView,
   FlatList,
-  Button,
   Platform,
   TouchableOpacity,
-  StyleSheet,
   KeyboardAvoidingView,
-  RefreshControl,
 } from 'react-native';
 import styles from './styles';
 import {useSelector, useDispatch} from 'react-redux';
@@ -35,13 +30,16 @@ export default function Todo() {
       dispatch(fetchedTodos(result.data));
     });
   };
+
   useEffect(fetchTodos, []);
 
   const handleAddTodo = () => {
+    setContent('');
     Axios.post('https://todolist-express-server.herokuapp.com/api/v1/todos', {
       content,
       done: false,
     }).then((result) => {
+      // eslint-disable-next-line no-shadow
       const {id, content, done} = result.data[0];
       dispatch(
         addTodo({
@@ -55,55 +53,28 @@ export default function Todo() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{fontFamily: 'Raleway-bold', fontSize: 40}}>
-            Whats on your mind?
-          </Text>
+          <Text style={styles.headerText}>Whats on your mind?</Text>
           <TextInput
-            style={{
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              height: 40,
-              borderColor: '#636363',
-              fontFamily: 'Raleway-ExtraLight',
-              marginTop: 10,
-              fontSize: 16,
-              padding: 6,
-            }}
+            style={styles.textInput}
             placeholderTextColor="#6363637y"
             placeholder="e.g. carwash, groceries, etc"
             textAlign="left"
             onChangeText={(title) => {
               setContent(title);
+              console.log(content);
             }}
             value={content}
             returnKeyType={Platform.OS === 'ios' ? 'default' : 'next'}
             onSubmitEditing={handleAddTodo}
-            //   keyboardType="numeric"
+            clearButtonMode="always"
           />
-          {/* <Button onPress={handleAddTodo} title="Add Todo" /> */}
-          <TouchableOpacity
-            onPress={handleAddTodo}
-            style={{
-              marginLeft: 'auto',
-              marginTop: 14,
-              // width: 60,
-              paddingVertical: 10,
-              paddingHorizontal: 18,
-              borderRadius: 20,
-              backgroundColor: '#8a162e',
-            }}>
-            <Text
-              style={{
-                fontSize: 16,
-                textAlign: 'center',
-                color: 'white',
-                fontFamily: 'Raleway-Bold',
-              }}>
-              ADD
-            </Text>
+          <TouchableOpacity onPress={handleAddTodo} style={styles.button}>
+            <Text style={styles.buttonText}>ADD</Text>
           </TouchableOpacity>
         </View>
 
