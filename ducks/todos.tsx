@@ -16,12 +16,20 @@ const sortById = (list) => list.sort((a, b) => b.id - a.id);
 // REDUCER
 export default function todoReducer(state = initialState, action) {
   switch (action.type) {
+    /**
+     * when requesting todo items from server, isLoading is set to true
+     * so that loading indicator will show
+     */
     case REQUEST_TODOS:
       return {
         ...state,
         isLoading: true,
       };
 
+    /**
+     * upon successfully getting todos from server, hide loading indicator
+     * and sort the list by id, and separate done and undone tasks
+     */
     case FETCHED_TODOS:
       return {
         ...state,
@@ -32,26 +40,32 @@ export default function todoReducer(state = initialState, action) {
         ],
       };
 
+    /**
+     * new todo will be added on to the top of list
+     */
     case ADD_TODO:
       return {
         ...state,
         todos: [action.newTodo, ...state.todos],
       };
 
+    /**
+     * is used to mark todo as done
+     */
     case EDIT_TODO:
-      console.log('-----', action.todoId);
-      console.log('+++++', action.updatedTodo);
       return {
         ...state,
         todos: state.todos.map((todo) => {
-          if (todo.id == action.todoId) {
-            return action.updatedTodo;
+          if (todo.id === action.todoId) {
+            return action.updatedTodo; // updated item from API
           } else {
-            return todo;
+            return todo; // existing item
           }
         }),
       };
-
+    /**
+     * filter out the item which is not the same id as todo.id
+     */
     case DELETE_TODO:
       return {
         ...state,

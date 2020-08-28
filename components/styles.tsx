@@ -65,6 +65,8 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 20,
     color: 'black',
+    // borderWidth: 1,
+    paddingRight: 10,
   },
   checkCircleIcon: {
     fontFamily: 'Raleway-ExtraLight',
@@ -72,5 +74,6 @@ export default StyleSheet.create({
     marginLeft: 20,
     color: '#a3a3a3',
     textDecorationLine: 'line-through',
+    paddingRight: 10,
   },
 });

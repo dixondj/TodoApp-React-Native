@@ -14,6 +14,10 @@ import styles from './styles';
 export default function ListItem({item}) {
   const dispatch = useDispatch();
 
+  // dispatch the items with the mark done
+  // call the api
+  //dipatch the result and change the state
+
   const handleMarkAsDone = () => {
     dispatch(
       editTodo(item.id, {
@@ -27,10 +31,11 @@ export default function ListItem({item}) {
         done: !item.done,
       },
     ).then((result) => {
-      //   dispatch(editTodo(item.id, result.data[0]));
+      dispatch(editTodo(item.id, result.data[0]));
     });
   };
 
+  // send updated text to after server after submitting the textinput
   const handleEdit = (e) => {
     Axios.put(
       `https://todolist-express-server.herokuapp.com/api/v1/todos/${item.id}`,
@@ -39,7 +44,7 @@ export default function ListItem({item}) {
       },
     );
   };
-
+  //to delete the selected item
   const handleDelete = () => {
     dispatch(deleteTodo(item.id));
     Axios.delete(

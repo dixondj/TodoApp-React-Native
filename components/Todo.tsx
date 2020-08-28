@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import styles from './styles';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, RootStateOrAny} from 'react-redux';
 import Axios from 'axios';
 
 import {addTodo, fetchedTodos, requestTodos} from '../ducks/todos';
@@ -18,10 +18,12 @@ import ListItem from './ListItem';
 
 export default function Todo() {
   const dispatch = useDispatch();
-  const {isLoading, todos} = useSelector((state) => state.todo);
-
+  const {isLoading, todos} = useSelector((state: RootStateOrAny) => state.todo);
   const [content, setContent] = useState('');
 
+  // the function will dispatch a request to fetch, where loading is true
+  // call the Api
+  // after successfuly fetched, it will display the data and loading will stop
   const fetchTodos = () => {
     dispatch(requestTodos());
     Axios.get(
@@ -33,6 +35,8 @@ export default function Todo() {
 
   useEffect(fetchTodos, []);
 
+  // this function wiill call the api and post the value to server
+  // then will dispatch the necesarry result to change the state
   const handleAddTodo = () => {
     setContent('');
     Axios.post('https://todolist-express-server.herokuapp.com/api/v1/todos', {
@@ -63,10 +67,8 @@ export default function Todo() {
             style={styles.textInput}
             placeholderTextColor="#6363637y"
             placeholder="e.g. carwash, groceries, etc"
-            textAlign="left"
             onChangeText={(title) => {
               setContent(title);
-              console.log(content);
             }}
             value={content}
             returnKeyType={Platform.OS === 'ios' ? 'default' : 'next'}
